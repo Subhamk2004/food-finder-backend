@@ -37,6 +37,8 @@ router.use(
         resave:false,
         cookie:{
             maxAge: 1000 * 60 * 60 * 24 * 7,
+            samesite:'none',
+            secure: true
              // 7 days
         },
         store: MongoStore.create({
