@@ -9,7 +9,7 @@ loginRouter.post('/loginuser', passport.authenticate("local"), (req, res) => {
 
     console.log(req.session.passport.user);
 
-    return res.status(200).send(req.user.email);
+    return res.status(200).send({ email: req.user.email });
 })
 
 loginRouter.get('/loginuser/status', (req, res) => {
@@ -30,9 +30,9 @@ loginRouter.get('/loginuser/status', (req, res) => {
 
 
 
-    if (req.session.passport.user) {
-        let data = req.session.passport.user;
-        console.log("req.session.passport.user is ",data);
+    if (req.user) {
+        let data = req.user.email;
+        console.log("req.user.email is ",data);
 
         return res.json({ email: data });
 
