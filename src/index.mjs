@@ -5,6 +5,7 @@ import cors from 'cors';
 import sessionDatabaseHandler from './utils/sessionHandler.mjs'
 import loginRouter from './routes/login.mjs'
 import logoutRouter from './routes/logoutRouter.mjs'
+import fooditemRouter from './routes/foodItem.mjs'
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -35,6 +36,7 @@ app.use(sessionDatabaseHandler);
 app.use(userRouter);
 app.use(loginRouter);
 app.use(logoutRouter);
+app.use(fooditemRouter);
 app.use(cartRouter);
 
 app.listen(PORT, () => {
