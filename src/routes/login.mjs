@@ -9,12 +9,14 @@ loginRouter.post('/loginuser', passport.authenticate("local"), (req, res) => {
 
     console.log(req.session.passport.user);
 
-    return res.status(200).send({ email: req.user.email });
+    return res.json({ user: req.user });
 })
 
 loginRouter.get('/loginuser/status', (req, res) => {
     console.log('inside login status');
     console.log(req.user);
+    console.log(req.cookies);
+    
 
 
     // if(req.session) {
