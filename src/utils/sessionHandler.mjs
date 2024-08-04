@@ -9,7 +9,7 @@ let databaseName = 'FoodFinder'
 let mongoURI = `mongodb+srv://subhamrahar22:HsnrYatHXhtSeKzw@foodfinder.xrb4b70.mongodb.net/${databaseName}`;
 
 
-
+let router = express();
 const mongoOptions = {
     retryWrites: true,
     w: "majority",
@@ -29,7 +29,7 @@ const mongoOptions = {
 
   mongoConnect();
 
-let router = express();
+
 router.use(express.json());
 
 router.use(cookieParser('CookieSecret'));
@@ -40,9 +40,6 @@ router.use(
         resave:false,
         cookie:{
             maxAge: 1000 * 60 * 60 * 24 * 7,
-            samesite:'none',
-            secure: true,
-            httpOnly: true
              // 7 days
         },
         store: MongoStore.create({

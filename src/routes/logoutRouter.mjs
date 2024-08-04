@@ -8,6 +8,8 @@ logoutRouter.post("/logout", (req, res) => {
   
     req.logout((err) => {
       if (err) return res.sendStatus(400);
+      req.cookies.isAuthenticated = false;
+      req.cookies.useremail = "";
       res.status(200).send("User logged out successfully");
     });
     // After using passport.session(), you can access the logout() function on the req object.
