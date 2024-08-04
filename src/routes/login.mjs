@@ -15,7 +15,8 @@ loginRouter.post('/loginuser', passport.authenticate("local"), (req, res) => {
 loginRouter.get('/loginuser/status', (req, res) => {
     console.log('inside login status');
     
-
+    console.log(req.user);
+    
     if (req.user) {
         let data = req.user.email;
         return res.json({email:data});
