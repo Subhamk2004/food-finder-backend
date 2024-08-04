@@ -21,8 +21,10 @@ loginRouter.get('/loginuser/status', (req, res) => {
     
     
     
-    if (req.user) {
-        let data = req.user.email;
+    if (req.session.passport.user) {
+        let data = req.session.passport.user;
+        console.log(data);
+        
         return res.json({email:data});
         
     }
