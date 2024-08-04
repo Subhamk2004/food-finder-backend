@@ -31,7 +31,6 @@ const mongoOptions = {
 
 let router = express();
 router.use(express.json());
-router.set('trust proxy', 1);
 
 router.use(cookieParser('CookieSecret'));
 router.use(
@@ -42,7 +41,8 @@ router.use(
         cookie:{
             maxAge: 1000 * 60 * 60 * 24 * 7,
             samesite:'none',
-            secure: true
+            secure: true,
+            httpOnly: true
              // 7 days
         },
         store: MongoStore.create({
