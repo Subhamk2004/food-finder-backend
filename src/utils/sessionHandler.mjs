@@ -8,6 +8,8 @@ import express from 'express';
 let databaseName = 'FoodFinder'
 let mongoURI = `mongodb+srv://subhamrahar22:HsnrYatHXhtSeKzw@foodfinder.xrb4b70.mongodb.net/${databaseName}`;
 
+
+
 const mongoOptions = {
     retryWrites: true,
     w: "majority",
@@ -29,6 +31,8 @@ const mongoOptions = {
 
 let router = express();
 router.use(express.json());
+router.set('trust proxy', 1);
+
 router.use(cookieParser('CookieSecret'));
 router.use(
     session({
