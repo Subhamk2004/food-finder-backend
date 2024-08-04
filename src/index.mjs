@@ -10,7 +10,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const app = express();
-
+app.set('trust proxy', 1);
 const allowedOrigins = process.env.ALLOWED_ORIGINS ? process.env.ALLOWED_ORIGINS.split(',') : ['http://localhost:5173', 'https://food-finder-lime.vercel.app'];
 
 app.use(cors({

@@ -9,11 +9,16 @@ loginRouter.post('/loginuser', passport.authenticate("local"), (req, res) => {
 
     console.log(req.session.passport.user);
     req.session.isAuthenticated = true;
-    req.session.email= req.user.email;
+    req.session.email = req.user.email;
     console.log(req.session);
-    
 
-    return res.json({ user: req.user });
+
+    req.session.save((err) => {
+        if (err) {
+            return res.status(500).json({ message: 'Could not save session' });
+        }
+        res.json({ user: req.user });
+    });
 })
 
 loginRouter.get('/loginuser/status', (req, res) => {
@@ -21,26 +26,11 @@ loginRouter.get('/loginuser/status', (req, res) => {
     console.log(req.user);
     console.log(req.cookies);
     console.log(req.session);
-    
-    
-
-
-    // if(req.session) {
-    //     console.log(req.session);
-    // }
-    // if(req.session.passport) {
-    //     console.log(req.session.passport);
-    // }
-    // if(req.session.passport.user) {
-    //     console.log(req.session.passport.user);  
-    // }
-
-
 
 
     if (req.user) {
         let data = req.user.email;
-        console.log("req.user.email is ",data);
+        console.log("req.user.email is ", data);
 
         return res.json({ email: data });
 
