@@ -5,10 +5,12 @@ let router = Router();
 
 router.get('/cart', async (req, res) => {
     try {
-        let fullCart = await Cart.find();
+        let email = req.query.email;
+        console.log(email);
+        
+        let fullCart = await Cart.find({email});
         res.status(200).send(fullCart);
         console.log(fullCart);
-        
     } catch (error) {
         console.log('Error getting users', error);
     }
@@ -18,6 +20,8 @@ router.post('/cart',
     async (req, res) => {
         console.log('Entered Post');
         let data = req.body;
+        console.log(data);
+        
         let newCart = new Cart(data);
         try {
             let savedCart = await newCart.save();
