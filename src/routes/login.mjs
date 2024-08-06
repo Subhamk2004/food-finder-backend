@@ -29,10 +29,10 @@ loginRouter.get('/loginuser/status', (req, res) => {
 
 
     if (req.user) {
-        let data = req.user.email;
-        console.log("req.user.email is ", data);
+        let data = req.user;
+        console.log("req.user is ", data);
 
-        return res.json({ email: data });
+        return res.json({ user: data });
 
     }
     return res.status(404).send({ message: "User already logged out" });
