@@ -4,10 +4,12 @@ import mongoose from 'mongoose';
 import cookieParser from 'cookie-parser';
 import MongoStore from 'connect-mongo';
 import express from 'express';
+import dotenv from 'dotenv';
 
-let databaseName = 'FoodFinder'
-let mongoURI = `mongodb+srv://subhamrahar22:HsnrYatHXhtSeKzw@foodfinder.xrb4b70.mongodb.net/${databaseName}`;
+dotenv.config();
 
+let mongoURI = process.env.MONGO_URI
+let cookieSecret = process.env.COOKIE_SECRET
 
 let router = express();
 const mongoOptions = {
@@ -35,7 +37,7 @@ router.use(express.json());
 router.use(cookieParser('CookieSecret'));
 router.use(
   session({
-    secret: "FoodFinderCookieSecretComplex",
+    secret: cookieSecret,
     saveUninitialized: false,
     resave: false,
     cookie: {
