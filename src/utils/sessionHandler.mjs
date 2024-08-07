@@ -56,7 +56,6 @@ router.use(passport.session());
 
 router.get('/', (req, res) => {
   console.log(req.session);
-  console.log(req.sessionID);
   req.session.visited = true;
 
 
