@@ -8,8 +8,8 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-let mongoURI = process.env.MONGO_URI
-let cookieSecret = process.env.COOKIE_SECRET
+let mongoURI = process.env.MONGO_URI;
+let cookieSecret = process.env.COOKIE_SECRET;
 
 let router = express();
 const mongoOptions = {
@@ -19,50 +19,48 @@ const mongoOptions = {
   tlsInsecure: false,
   // tlsAllowInvalidCertificates: true
 };
-let mongoConnect = () => {
-  mongoose.connect(mongoURI, mongoOptions)
-    .then((data) => {
-      console.log('Connected to MongoDB successfully');
-    })
-    .catch((error) => {
-      console.log('Failed to connect to MongoDB: ', error);
-    })
-}
 
-mongoConnect();
-
-
-router.use(express.json());
-
-router.use(cookieParser('CookieSecret'));
-router.use(
-  session({
-    secret: cookieSecret,
-    saveUninitialized: false,
-    resave: false,
-    cookie: {
-      maxAge: 1000 * 60 * 60 * 24 * 7,
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production', // true in production
-      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax'
-      // 7 days
-    },
-    store: MongoStore.create({
-      client: mongoose.connection.getClient(),
-    }),
+mongoose.connect(mongoURI, mongoOptions)
+  .then((data) => {
+    console.log('Connected to MongoDB successfully');
+    setupMiddleware();
   })
-)
-
-router.use(passport.initialize());
-router.use(passport.session());
-
-router.get('/', (req, res) => {
-  console.log(req.session);
-  console.log(req.sessionID);
-  req.session.visited = true;
+  .catch((error) => {
+    console.log('Failed to connect to MongoDB: ', error);
+  })
 
 
-  res.status(200).send('Hello from the home route!');
-})
+
+function setupMiddleware() {
+  router.use(express.json());
+  router.use(cookieParser(cookieSecret));
+  router.use(
+    session({
+      secret: cookieSecret,
+      saveUninitialized: false,
+      resave: false,
+      cookie: {
+        maxAge: 1000 * 60 * 60 * 24 * 7,
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax'
+      },
+      store: MongoStore.create({
+        mongoUrl: mongoURI,
+        ttl: 14 * 24 * 60 * 60 // 14 days
+      }),
+    })
+  );
+
+  router.use(passport.initialize());
+  router.use(passport.session());
+
+  router.get('/', (req, res) => {
+    console.log(req.session);
+    console.log(req.sessionID);
+    req.session.visited = true;
+    res.status(200).send('Hello from the home route!');
+  });
+}
 
 export default router;
